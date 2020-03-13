@@ -1,0 +1,12 @@
+<tbody>
+<?php foreach($orderDetails as $orderDetail): ?>
+    <tr>
+        <td class="font-weight-bold"><?php echo $i++; ?></td>
+        <td><?php echo $orderDetail->product_name; ?></td>
+        <td>Tk. <?php echo $orderDetail->product_price; ?></td>
+        <td><?php echo $orderDetail->product_quantity; ?></td>
+        <td>Tk. <?php echo $total = $orderDetail->product_price * $orderDetail->product_quantity; ?></td>
+        <?php $sum += $total;?>
+    </tr>
+    <?php endforeach; ?>
+</tbody>
