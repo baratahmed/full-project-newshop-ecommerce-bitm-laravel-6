@@ -12,6 +12,7 @@ class NewShopController extends Controller
                                 ->orderBy('id', 'DESC')
                                 ->take(12)
                                 ->get();
+
         return view('front-end.home.home',[
         'newProducts' => $newProducts,
         ]);

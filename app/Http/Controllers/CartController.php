@@ -12,10 +12,10 @@ class CartController extends Controller
         $product = Product::find($request->id);
         Cart::add([
             'id' => $request->id,
-            'name' => $product->product_name, 
+            'name' => $product->product_name,
             'price' => $product->product_price,
             'weight' => 100,
-            'qty' => $request->qty, 
+            'qty' => $request->qty,
             'options' => [
                 'image' => $product->product_image
             ] 

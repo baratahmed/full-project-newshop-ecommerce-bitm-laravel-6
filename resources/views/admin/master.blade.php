@@ -69,7 +69,7 @@
         
         @if(Session::has('success'))
         <script>
-            toastr["success"]("{{Session::get('success')}}", "No Brand")
+            toastr["success"]("{{Session::get('success')}}", "New Shop")
         </script>
         @endif
 

@@ -100,7 +100,7 @@ class CheckoutController extends Controller
 
     public function newOrder(Request $request){
         $paymentType = $request->payment_type;
-        if ($paymentType=='Cash') {
+        if ($paymentType=='Cash') { 
             $order = new Order();
             $order->customer_id  = Session::get('customerId');
             $order->shipping_id  = Session::get('shippingId');
@@ -126,41 +126,73 @@ class CheckoutController extends Controller
             return redirect()->route('complete-order');
             //return redirect('/complete/order');
 
-        }else if($paymentType=='Paypal'){
-            $order = new Order();
-            $order->customer_id  = Session::get('customerId');
-            $order->shipping_id  = Session::get('shippingId');
-            $order->order_total = Session::get('orderTotal');
-            $order->save();
+        }else if($paymentType=='Stripe'){
+            
+            return view('cardForm');
 
-            $payment = new Payment();
-            $payment->order_id  = $order->id;
-            $payment->payment_type  = $paymentType;
-            $payment->save();
-
-            $cartProducts = Cart::content();
-            foreach ($cartProducts as $cartProduct) {
-                $orderDetail = new OrderDetail();
-                $orderDetail->order_id  = $order->id;
-                $orderDetail->product_id  = $cartProduct->id;
-                $orderDetail->product_name  = $cartProduct->name;
-                $orderDetail->product_price  = $cartProduct->price;
-                $orderDetail->product_quantity  = $cartProduct->qty;
-                $orderDetail->save();
-            }
-            Cart::destroy();
         }
         else if($paymentType=='Bkash'){
-            
+            return redirect('/example1');
         }
         
     }
+
+    public function stripePayment(Request $request){
+        $customer = Customer::find(Session::get('customerId'));
+        $order = new Order();
+        $order->customer_id  = Session::get('customerId');
+        $order->shipping_id  = Session::get('shippingId');
+        $order->order_total = Session::get('orderTotal');
+        $order->save();
+
+        $payment = new Payment();
+        $payment->order_id = $order->id;
+        $payment->payment_type  = 'Stripe';
+        $payment->save();
+
+        $cartProducts = Cart::content();
+        foreach ($cartProducts as $cartProduct) {
+            $orderDetail = new OrderDetail();
+            $orderDetail->order_id  = $order->id;
+            $orderDetail->product_id  = $cartProduct->id;
+            $orderDetail->product_name  = $cartProduct->name;
+            $orderDetail->product_price  = $cartProduct->price;
+            $orderDetail->product_quantity  = $cartProduct->qty;
+            $orderDetail->save();
+        }
+        Cart::destroy();
+
+        // Stripe Process
+
+        \Stripe\Stripe::setApiKey('sk_test_51IyHqaBTGpLS02saT35DzKHxN5NauyOhB7cde8vSuHS8pHTYxH2TbtygIXVTTMSoK9ON5qLzTiRbfBKUj63nyezK00jleGAPxH');
+        $customer = \Stripe\Customer::create(array(
+            'name' => $customer->first_name.' '.$customer->last_name,
+            'description' => 'Test description',
+            'email' => $customer->email_address,
+            'source' => $request->input('stripeToken'),
+            "address" => ["city" => "Chittagong", "country" => "BD", "line1" => "510 Townsend St", "postal_code" => "4000", "state" => "CTG"]
+
+        ));
+        try {
+            \Stripe\Charge::create( array (
+                    "amount" => Session::get('orderTotal') * 100,
+                    "currency" => "bdt",
+                    "customer" =>  $customer["id"],
+                    "description" => "Test payment."
+            ) );
+            Session::flash ( 'success-message', 'Payment done successfully !' );
+            return view('front-end.payment.success');
+        } catch ( \Stripe\Error\Card $e ) {
+            Session::flash ( 'fail-message', $e->get_message());
+            return 'Stripe failed';
+            
+        }
+    }
+
     public function completeOrder()
     {
     	return 'Success';
     }
-
-
 
     public function ajaxEmailcheck($email){
         $customer = Customer::where('email_address',$email)->first();

@@ -71,13 +71,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-11 col-md-offset-1">
-@if(Session::get('customerId') && Session::get('shippingId'))
-<a href="{{route('checkout-payment')}}" class="btn btn-warning pull-right">Checkout</a>
-@elseif(Session::get('customerId'))
-<a href="{{route('checkout-shipping')}}" class="btn btn-warning pull-right">Checkout</a>
-@else
-<a href="{{route('checkout')}}" class="btn btn-warning pull-right">Checkout</a>
-@endif
+                        @if(Session::get('customerId') && Session::get('shippingId'))
+                        <a href="{{route('checkout-payment')}}" class="btn btn-warning pull-right">Checkout</a>
+                        @elseif(Session::get('customerId'))
+                        <a href="{{route('checkout-shipping')}}" class="btn btn-warning pull-right">Checkout</a>
+                        @else
+                        <a href="{{route('checkout')}}" class="btn btn-warning pull-right">Checkout</a>
+                        @endif
                         <a href="" class="btn btn-warning">Continue Shopping</a>
                     </div>
                 </div>

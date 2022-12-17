@@ -18,7 +18,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href='//fonts.googleapis.com/css?family=Cagliostro' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300' rel='stylesheet' type='text/css'>
 <!--search jQuery-->
-	<script src="{{asset('/')}}front-end/js/main.js"></script>
+<script src="{{asset('/')}}front-end/js/main.js"></script>
 <!--search jQuery-->
 <script src="{{asset('/')}}front-end/js/responsiveslides.min.js"></script>
  <script>
@@ -370,12 +370,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
 			</div>
 
-
+			<script>
+				(function (window, document) {
+					var loader = function () {
+						var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+						script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
+						tag.parentNode.insertBefore(script, tag);
+					};
+			
+					window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+				})(window, document);
+			</script>
 
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 			@if(Session::has('invalid_email'))
 			<script>
-				toastr["error"]("{{Session::get('invalid_email')}}", "No Brand")
+				toastr["error"]("{{Session::get('invalid_email')}}", "New Shop")
 			</script>
 			@endif
 </body>

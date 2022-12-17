@@ -19,12 +19,18 @@
                             <td><input type="radio" name="payment_type" value="Cash"> Cash On Delivery</td>
                         </tr>
                         <tr>
-                            <th>Paypal</th>
-                            <td><input type="radio" name="payment_type" value="Paypal"> Paypal</td>
+                            <th>Stripe</th>
+                            <td><input type="radio" name="payment_type" value="Stripe"> Stripe</td>
                         </tr>
                         <tr>
-                            <th>BKash</th>
-                            <td><input type="radio" name="payment_type" value="Bkash"> Bkash</td>
+                            <th>SSL Commerz</th>
+                            {{-- <td><input type="radio" name="payment_type" value="Bkash"> Bkash</td> --}}
+                            <td><button id="sslczPayBtn"
+                                token="if you have any token validation"
+                                postdata=""
+                                order="If you already have the transaction generated for current order"
+                                endpoint="/pay-via-ajax"> Pay Now
+                        </button></td>
                         </tr>
                         <tr>
                             <th></th>
